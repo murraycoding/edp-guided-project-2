@@ -1,6 +1,6 @@
 var express = require('express');
 
-var {MongoClient} = require('mongodb');
+var { MongoClient } = require('mongodb');
 
 var app = express();
 app.use(express.json());
@@ -17,100 +17,229 @@ app.listen(port);
 //*/
 
 
-async function getAllPlanets(){
-    try{
-        const collection = db.collection('planet');
-        const planets = await collection.find().toArray();
-       
-    } catch (e){
-        console.error(e);
-    }
-}
 
 
-app.get("/api/planets" , async  (req,res) =>{
+app.get("/api/planets", async (req, res) => {
     //retrieve planets from db
     // curl http://localhost:5000/api/planets
-    try{
-        console.log("hello");
-        const client = await MongoClient.connect(url);
-        console.log("1");
-        const db = client.db('swapi');
-        console.log("2");
-        const collection = db.collection('planets');
-        console.log("3");
-        const planets = await collection.find().toArray();
-        client.close();
-        res.json(planets);
-    }catch (error){
-        console.error(error);
-    }
-});
-
-app.get("/api/planets" , async  (req,res) =>{
-    //retrieve planets from db
-    // curl http://localhost:5000/api/planets
-    try{
+    try {
         const client = await MongoClient.connect(url);
         const db = client.db('swapi');
         const collection = db.collection('planets');
         const planets = await collection.find().toArray();
         client.close();
         res.json(planets);
-    }catch (error){
+    } catch (error) {
         console.error(error);
     }
 });
 
-app.get("/api/characters" , async  (req,res) =>{
-    //retrieve planets from db
-    // curl http://localhost:5000/api/planets
-    try{
-        const client = await MongoClient.connect(url);
-        const db = client.db('swapi');
-        const collection = db.collection('characters');
-        const characters = await collection.find().toArray();
-        client.close();
-        res.json(characters);
-    }catch (error){
-        console.error(error);
-    }
-});
 
-app.get("/api/films" , async  (req,res) =>{
+
+app.get("/api/films", async (req, res) => {
     //retrieve planets from db
     // curl http://localhost:5000/api/films
-    try{
+    try {
         const client = await MongoClient.connect(url);
         const db = client.db('swapi');
         const collection = db.collection('films');
         const films = await collection.find().toArray();
         client.close();
         res.json(films);
-    }catch (error){
+    } catch (error) {
         console.error(error);
     }
 });
 
-app.get("/api/characters/:id" , async  (req,res) =>{
+app.get("/api/characters/:id", async (req, res) => {
     //retrieve planets from db
     // curl http://localhost:5000/api/films
-    console.log("in character id"); 
+    console.log("in character id");
     const id = req.params.id;
-    try{
+    console.log(id);
+    try {
         const client = await MongoClient.connect(url);
         const db = client.db('swapi');
         const collection = db.collection('characters');
-        const characters = await collection.findOne({'id': id});
+        const characters = await collection.findOne({ 'id': +id });
         console.log(characters);
         client.close();
-        if(characters){
+        if (characters) {
             res.json(characters);
         } else {
             res.status(404);
         }
-        
-    }catch (error){
+
+    } catch (error) {
         console.error(error);
+    }
+});
+
+app.get("/api/characters", async (req, res) => {
+    //retrieve planets from db
+    // curl http://localhost:5000/api/planets
+
+    console.log("in characters");
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('characters');
+        const characters = await collection.find().toArray();
+        client.close();
+        res.json(characters);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+app.get("/api/films/:id", async (req, res) => {
+    //retrieve planets from db
+    // curl http://localhost:5000/api/films
+    console.log("in films id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('films');
+        const films = await collection.findOne({ 'id': +id });
+        console.log(films);
+        client.close();
+        if (films) {
+            res.json(films);
+        } else {
+            res.status(404);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/api/planets/:id", async (req, res) => {
+    //retrieve planets from db
+    // curl http://localhost:5000/api/films
+    console.log("in planets id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('planets');
+        const planets = await collection.findOne({ 'id': +id });
+        console.log(planets);
+        client.close();
+        if (planets) {
+            res.json(planets);
+        } else {
+            res.status(404);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/api/characters/:id/films", async (req, res) => {
+    //retrieve planets from db 
+    // curl http://localhost:5000/api/films 
+    console.log("in planets id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('films_characters');
+        const planets = await collection.find({ 'character_id': +id }).toArray();
+        //const films = planets[0].film_id;
+        await client.close();
+
+        const client1 = await MongoClient.connect(url);
+        const db1 = client1.db('swapi');
+        const film_collection = db1.collection("films");
+
+        const films = await Promise.all(planets.map(
+            (planet) => film_collection.findOne({ "id": +planet.film_id }) 
+
+        ));
+        client.close();
+        if (films) {
+            res.json(films);
+        } else {
+            res.status(404);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+
+app.get("/api/planets/:id/films", async (req, res) => {
+    //retrieve planets from db 
+    // curl http://localhost:5000/api/films 
+    console.log("in planets id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('films_planets');
+        const planets = await collection.find({ 'planet_id': +id }).toArray();
+        //const films = planets[0].film_id;
+        await client.close();
+
+        const client1 = await MongoClient.connect(url);
+        const db1 = client1.db('swapi');
+        const film_collection = db1.collection("films");
+
+        const films = await Promise.all(planets.map(
+            (planet) => film_collection.findOne({ "id": +planet.film_id }) 
+
+        ));
+        client.close();
+        if (films) {
+            res.json(films);
+        } else {
+            res.status(404);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/api/planets/:id/characters", async (req, res) => {
+    //retrieve planets from db 
+    // curl http://localhost:5000/api/films 
+    console.log("in planets id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('planets');
+        const planets = await collection.find({ 'id': +id }).toArray();
+        const collection_c = db.collection('characters'); 
+        const characters = await collection_c.find().toArray(); 
+
+        db.characters.aggregate([
+            {
+                $lookup: {
+                    from: 'planets',
+                    localField: "id", 
+                    foreignField: "", 
+                    
+                }
+            }
+        ])
+
+
+        client.close();
+    }catch (e){
+        console.error(e)
     }
 });
