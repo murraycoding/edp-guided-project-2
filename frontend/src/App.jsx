@@ -25,7 +25,7 @@ function App() {
   <Character key={index} name={character.name} id={character.id}/>)
 
   return (
-    <>
+    <div className="App">
         <h1>Star Wars Universe Lookup</h1>
         {character_components}
         <Routes>
@@ -34,7 +34,7 @@ function App() {
           <Route path="/films/:id" element={<FilmPage />} />
         </Routes>
         
-    </>
+    </div>
   )
 }
 
