@@ -1,4 +1,4 @@
-export default function Homeworld({name}) {
+export default function HomeworldButton({name}) {
     return (
         <button>
             {name}
