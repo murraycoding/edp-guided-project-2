@@ -7,7 +7,7 @@ app.use(express.json());
 
 const port = 5000;
 
-const url = "mongodb://127.0.01:27017"
+const url = "mongodb://127.0.0.1:27017"
 
 
 app.listen(port);
@@ -40,6 +40,7 @@ app.get("/api/planets" , async  (req,res) =>{
         console.log("3");
         const planets = await collection.find().toArray();
         client.close();
+        res.json(planets);
     }catch (error){
         console.error(error);
     }
