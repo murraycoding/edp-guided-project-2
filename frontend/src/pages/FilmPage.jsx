@@ -1,19 +1,13 @@
-import Homeworld from "../components/Homeworld"
-import FilmButton from "../components/FilmButton"
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
 
 export default function CharacterPage() {
-    const params = useParams();
-    let id = params.id;
 
-    // [characterInfo, setCharacterInfo] = useState({})
+    [characterInfo, setCharacterInfo] = useState({})
 
     useEffect(
         () => {
             // fetch request here
             // setcharacterInfo(stuff from fetch request)
-            console.log("reached the character page")
         }, 
     [])
     const filmComponents = films.map((film, index) => <FilmButton key={index} name={film.name} />)
