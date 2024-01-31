@@ -1,29 +1,36 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom";
+import Character from "../components/Character";
+import PlanetButton from '../components/PlanetButton';
 
-export default function CharacterPage() {
+export default function FilmPage() {
+    const params = useParams();
+    let id = params.id;
 
-    [characterInfo, setCharacterInfo] = useState({})
+    // state variables for data to be loaded from API
+    const [filmInfo, setFilmInfo] = useState({})
+    const [charactersInfo, setCharactersInfo] = useState([])
+    const [planetsInfo, setPlanetsInfo] = useState([])
 
+    // grabs the info from the API when the page loads
     useEffect(
         () => {
-            // fetch request here
-            // setcharacterInfo(stuff from fetch request)
-        }, 
+            fetch(`/api/films/${id}`).then(res => res.json()).then(filmInfo => setFilmInfo(filmInfo))
+            fetch(`/api/films/${id}/characters`).then(res => res.json()).then(charactersInfo => setCharactersInfo(charactersInfo))
+            fetch(`/api/films/${id}/planets`).then(res => res.json()).then(planetsInfo => setPlanetsInfo(planetsInfo))
+        },
     [])
-    const filmComponents = films.map((film, index) => <FilmButton key={index} name={film.name} />)
+
+    const character_components = charactersInfo.map((character, index) => <Character key={index} name={character.name} id={character.id}/>)
+    const planet_components = planetsInfo.map((planet, index) => <PlanetButton key={index} name={planet.name} id={planet.id}/>)
 
     return (
         <section>
-            <h1>{name}</h1>
-            <div className="character-info-section">
-                <div className="character-info">Height: {height}cm</div>
-                <div className="character-info">Mass: {mass}kg</div>
-                <div className="character-info">Born: {birthdate}BBY</div>
-            </div>
-            <h2>Homeworld</h2>
-                <Homeworld name={homeworld} />
-            <h2>Films Appeared In</h2>
-                {filmComponents}
+            <h1>{filmInfo.title}</h1>
+            <h2>Characters</h2>
+            {character_components}
+            <h2>planets Info</h2>
+            {planet_components}
         </section>
     )
 }
