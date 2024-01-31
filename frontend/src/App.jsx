@@ -4,6 +4,7 @@ import './App.css'
 import Character from './components/Character'
 import AboutPage from './pages/AboutPage'
 import CharacterPage from './pages/CharacterPage'
+import FilmPage from './pages/FilmPage'
 
 function App() {
   // const [characters, setCharacters] = useState([])
@@ -30,6 +31,7 @@ function App() {
         <Routes>
           <Route path='/' component={AboutPage} />
           <Route path="/characters/:id" element={<CharacterPage />} />
+          <Route path="/films/:id" element={<FilmPage />} />
         </Routes>
         
     </>
