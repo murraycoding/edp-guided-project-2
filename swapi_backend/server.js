@@ -215,29 +215,17 @@ app.get("/api/planets/:id/films", async (req, res) => {
 app.get("/api/planets/:id/characters", async (req, res) => {
     //retrieve planets from db 
     // curl http://localhost:5000/api/films 
-    console.log("in planets id");
+    console.log("in planets character id");
     const id = req.params.id;
     console.log(id);
     try {
         const client = await MongoClient.connect(url);
         const db = client.db('swapi');
-        const collection = db.collection('planets');
-        const planets = await collection.find({ 'id': +id }).toArray();
         const collection_c = db.collection('characters'); 
-        const characters = await collection_c.find().toArray(); 
-
-        db.characters.aggregate([
-            {
-                $lookup: {
-                    from: 'planets',
-                    localField: "id", 
-                    foreignField: "", 
-                    
-                }
-            }
-        ])
-
-
+        const characters = await collection_c.find({"homeworld": +id}).toArray(); 
+        console.log(characters);
+        
+        res.json(characters);
         client.close();
     }catch (e){
         console.error(e)
