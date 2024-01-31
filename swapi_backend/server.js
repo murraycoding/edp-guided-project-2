@@ -215,9 +215,12 @@ app.get("/api/planets/:id/films", async (req, res) => {
     }
 });
 
+
+
+
 app.get("/api/films/:id/characters", async (req, res) => {
-    //retrieve planets from db
-    // curl http://localhost:5000/api/films
+    //retrieve planets from db 
+    // curl http://localhost:5000/api/films 
     console.log("in planets id");
     const id = req.params.id;
     console.log(id);
@@ -231,15 +234,17 @@ app.get("/api/films/:id/characters", async (req, res) => {
 
         const client1 = await MongoClient.connect(url);
         const db1 = client1.db('swapi');
-        const film_collection = db1.collection("characters");
+        const characters_collection = db1.collection("characters");
 
         const characters = await Promise.all(films.map(
-            (film) => film_collection.findOne({ "id": +films.character_id }) 
+            (film) => characters_collection.findOne({ "id": +film.character_id }) 
 
         ));
+
+        console.log(characters)
         client.close();
-        if (films) {
-            res.json(films);
+        if (characters) {
+            res.json(characters);
         } else {
             res.status(404);
         }
