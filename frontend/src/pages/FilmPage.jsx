@@ -8,7 +8,7 @@ export default function FilmPage() {
     let id = params.id;
 
     // state variables for data to be loaded from API
-    const [filmInfo, setFilmInfo] = useState({})
+    const [filmInfo, setFilmInfo] = useState([])
     const [charactersInfo, setCharactersInfo] = useState([])
     const [planetsInfo, setPlanetsInfo] = useState([])
 
