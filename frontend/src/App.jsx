@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
-import { create}
+import { Link, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Character from './components/Character'
+import AboutPage from './pages/AboutPage'
+import CharacterPage from './pages/CharacterPage'
 
 function App() {
   // const [characters, setCharacters] = useState([])
@@ -14,17 +16,22 @@ function App() {
   }, [])
 
   const characters = [
-    {'name':'Brian','planet':'Earth'},
-    {'name':'Alessandro','planet':'Earth'},
+    {'name':'Brian','planet':'Earth', 'id':1},
+    {'name':'Alessandro','planet':'Earth','id':2},
   ]
 
   const character_components = characters.map( (character, index) => 
-  <Character key={index} name={character.name}/>)
+  <Character key={index} name={character.name} id={character.id}/>)
 
   return (
     <>
-        <h1>The app is working.</h1>
-       {character_components}
+        <h1>Star Wars Universe Lookup</h1>
+        {character_components}
+        <Routes>
+          <Route path='/' component={AboutPage} />
+          <Route path="/characters/:id" element={<CharacterPage />} />
+        </Routes>
+        
     </>
   )
 }
