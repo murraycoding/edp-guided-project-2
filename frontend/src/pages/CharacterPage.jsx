@@ -1,21 +1,22 @@
 import Homeworld from "../components/Homeworld"
 import FilmButton from "../components/FilmButton"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 export default function CharacterPage() {
     const params = useParams();
     let id = params.id;
 
-    // [characterInfo, setCharacterInfo] = useState({})
+    const [characterInfo, setCharacterInfo] = useState({})
+    const [films, setFilms] = useState([])
 
-    useEffect(async () => {
-        const response = await fetch(`http://localhost:5000/api/characters/${id}/films`)
-        const films = await response.json()
-        console.log(films)
-    }, [])
+    useEffect(() => {
+            fetch(`/api/characters/${id}/films`).then(res => res.json()).then(films => {setFilms(films)})
+            fetch(`/api/characters/${id}`).then(res => res.json()).then(characterInfo => setCharacterInfo(characterInfo))
+        }, [])
     // const filmComponents = films.map((film, index) => <FilmButton key={index} name={film.name} />)
-
+        console.log(films)
+        console.log(characterInfo)
     /*
     return (
         <section>
