@@ -117,6 +117,9 @@ app.get("/api/films/:id", async (req, res) => {
     }
 });
 
+
+
+
 app.get("/api/planets/:id", async (req, res) => {
     //retrieve planets from db
     // curl http://localhost:5000/api/films
@@ -203,6 +206,40 @@ app.get("/api/planets/:id/films", async (req, res) => {
         client.close();
         if (films) {
             res.json(films);
+        } else {
+            res.status(404);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.get("/api/films/:id/characters", async (req, res) => {
+    //retrieve planets from db
+    // curl http://localhost:5000/api/films
+    console.log("in planets id");
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const client = await MongoClient.connect(url);
+        const db = client.db('swapi');
+        const collection = db.collection('films_characters');
+        const films = await collection.find({ 'film_id': +id }).toArray();
+        //const films = planets[0].film_id;
+        await client.close();
+
+        const client1 = await MongoClient.connect(url);
+        const db1 = client1.db('swapi');
+        const film_collection = db1.collection("characters");
+
+        const characters = await Promise.all(films.map(
+            (films) => {film_collection.findOne({ "id": +films.character_id }) }
+
+        ));
+        client.close();
+        if (characters) {
+            res.json(characters);
         } else {
             res.status(404);
         }
