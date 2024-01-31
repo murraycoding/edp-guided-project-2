@@ -1,12 +1,13 @@
 // import {useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+
+// <Link to={`characters/${props.id}`} />
 
 export default function Character(props) {
     // props should be name, and id
     return (
-        <button className = "Character">
-        <Link to={`characters/${props.id}`} />
-            {props.name}
-        </button>
+        <button>
+            <Link to={`/characters/${props.id}`}>{props.name}</Link>
+        </button> 
     )
 }
