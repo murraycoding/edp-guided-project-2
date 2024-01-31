@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import Character from "../components/Character";
-import PlanetButton from '../components/PlanetButton';
+import FilmButton from '../components/FilmButton';
 
-export default function FilmPage() {
+export default function PlanetPage() {
     const params = useParams();
     let id = params.id;
 
     // state variables for data to be loaded from API
+    const [planetInfo, setPlanetInfo] = useState([])
     const [filmInfo, setFilmInfo] = useState([])
     const [charactersInfo, setCharactersInfo] = useState([])
-    const [planetsInfo, setPlanetsInfo] = useState([])
 
     // grabs the info from the API when the page loads
     useEffect(
         () => {
-            fetch(`/api/films/${id}`).then(res => res.json()).then(filmInfo => setFilmInfo(filmInfo))
+            fetch(`/api/planets/${id}`).then(res => res.json()).then(planetInfo => setFilmInfo(planetInfo))
             fetch(`/api/films/${id}/characters`).then(res => res.json()).then(charactersInfo => setCharactersInfo(charactersInfo))
             fetch(`/api/films/${id}/planets`).then(res => res.json()).then(planetsInfo => setPlanetsInfo(planetsInfo))
         },
