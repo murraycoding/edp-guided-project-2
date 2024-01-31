@@ -95,7 +95,7 @@ app.get("/api/films" , async  (req,res) =>{
 app.get("/api/characters/:id" , async  (req,res) =>{
     //retrieve planets from db
     // curl http://localhost:5000/api/films
-    console.log("in character id")
+    console.log("in character id"); 
     const id = req.params.id;
     try{
         const client = await MongoClient.connect(url);
