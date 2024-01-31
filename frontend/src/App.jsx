@@ -5,6 +5,7 @@ import Character from './components/Character'
 import AboutPage from './pages/AboutPage'
 import CharacterPage from './pages/CharacterPage'
 import FilmPage from './pages/FilmPage'
+import PlanetPage from './pages/PlanetPage'
 
 function App() {
   // const [characters, setCharacters] = useState([])
@@ -32,6 +33,7 @@ function App() {
           <Route path='/' component={AboutPage} />
           <Route path="/characters/:id" element={<CharacterPage />} />
           <Route path="/films/:id" element={<FilmPage />} />
+          <Route path="planets/:id" element={<PlanetPage />} />
         </Routes>
         
     </div>

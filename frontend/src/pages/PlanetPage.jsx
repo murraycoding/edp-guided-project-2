@@ -9,28 +9,28 @@ export default function PlanetPage() {
 
     // state variables for data to be loaded from API
     const [planetInfo, setPlanetInfo] = useState([])
-    const [filmInfo, setFilmInfo] = useState([])
+    const [filmsInfo, setFilmsInfo] = useState([])
     const [charactersInfo, setCharactersInfo] = useState([])
 
     // grabs the info from the API when the page loads
     useEffect(
         () => {
-            fetch(`/api/planets/${id}`).then(res => res.json()).then(planetInfo => setFilmInfo(planetInfo))
-            fetch(`/api/films/${id}/characters`).then(res => res.json()).then(charactersInfo => setCharactersInfo(charactersInfo))
-            fetch(`/api/films/${id}/planets`).then(res => res.json()).then(planetsInfo => setPlanetsInfo(planetsInfo))
+            fetch(`/api/planets/${id}`).then(res => res.json()).then(planetInfo => setPlanetInfo(planetInfo))
+            fetch(`/api/planets/${id}/characters`).then(res => res.json()).then(charactersInfo => setCharactersInfo(charactersInfo))
+            fetch(`/api/planets/${id}/films`).then(res => res.json()).then(filmsInfo => setFilmsInfo(filmsInfo))
         },
     [])
 
     const character_components = charactersInfo.map((character, index) => <Character key={index} name={character.name} id={character.id}/>)
-    const planet_components = planetsInfo.map((planet, index) => <PlanetButton key={index} name={planet.name} id={planet.id}/>)
+    const film_components = filmsInfo.map((film, index) => <FilmButton key={index} title={film.title} id={film.id}/>)
 
     return (
         <section>
-            <h1>{filmInfo.title}</h1>
+            <h1>{planetInfo.name}</h1>
+            <h2>Films</h2>
+            {film_components}
             <h2>Characters</h2>
             {character_components}
-            <h2>planets Info</h2>
-            {planet_components}
         </section>
     )
 }
