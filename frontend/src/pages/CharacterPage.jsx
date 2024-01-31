@@ -9,15 +9,14 @@ export default function CharacterPage() {
 
     // [characterInfo, setCharacterInfo] = useState({})
 
-    useEffect(
-        () => {
-            // fetch request here
-            // setcharacterInfo(stuff from fetch request)
-            console.log("reached the character page")
-        }, 
-    [])
-    const filmComponents = films.map((film, index) => <FilmButton key={index} name={film.name} />)
+    useEffect(async () => {
+        const response = await fetch(`http://localhost:5000/api/characters/${id}/films`)
+        const films = await response.json()
+        console.log(films)
+    }, [])
+    // const filmComponents = films.map((film, index) => <FilmButton key={index} name={film.name} />)
 
+    /*
     return (
         <section>
             <h1>{name}</h1>
@@ -29,7 +28,9 @@ export default function CharacterPage() {
             <h2>Homeworld</h2>
                 <Homeworld name={homeworld} />
             <h2>Films Appeared In</h2>
-                {filmComponents}
         </section>
     )
+    */
+
+    return (<p>This is a test</p>)
 }
