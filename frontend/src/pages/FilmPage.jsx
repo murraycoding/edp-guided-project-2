@@ -1,5 +1,3 @@
-import Homeworld from "../components/Homeworld"
-import FilmButton from "../components/FilmButton"
 import { useEffect } from "react"
 
 export default function CharacterPage() {

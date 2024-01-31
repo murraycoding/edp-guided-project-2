@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { create}
+import { Link } from 'react-router-dom'
 import './App.css'
 import Character from './components/Character'
 
@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-        <h1>The app is working.</h1>
+        <h1>Star Wars Universe Lookup</h1>
        {character_components}
     </>
   )
