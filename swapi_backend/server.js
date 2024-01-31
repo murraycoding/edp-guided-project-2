@@ -234,12 +234,12 @@ app.get("/api/films/:id/characters", async (req, res) => {
         const film_collection = db1.collection("characters");
 
         const characters = await Promise.all(films.map(
-            (films) => {film_collection.findOne({ "id": +films.character_id }) }
+            (film) => film_collection.findOne({ "id": +films.character_id }) 
 
         ));
         client.close();
-        if (characters) {
-            res.json(characters);
+        if (films) {
+            res.json(films);
         } else {
             res.status(404);
         }
